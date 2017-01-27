@@ -6,7 +6,7 @@
 
 A bundle that adds SAML capabilities to your application using [simplesamlphp/saml2][1]
 
-Developed as part of the [SURFnet StepUp Gateway][2]
+Developed as part of the [SURFnet Stepup Gateway][2]
 
 ## Installation
 
@@ -91,4 +91,4 @@ class MetadataController extends Controller
 ```
 
 [1]: https://github.com/simplesamlphp/saml2
-[2]: https://github.com/SURFnet/Stepup-Gateway
+[2]: https://github.com/OpenConext/Stepup-Gateway
