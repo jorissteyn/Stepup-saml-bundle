@@ -260,6 +260,8 @@ class SurfnetSamlExtension extends Extension
             $configuration['certificateFile'] = $provider['certificate_file'];
         } elseif (isset($provider['certificate'])) {
             $configuration['certificateData'] = $provider['certificate'];
+        } elseif (isset($provider['keys'])) {
+            $configuration['keys'] = $provider['keys'];
         } else {
             throw SamlInvalidConfigurationException::missingCertificate($path);
         }

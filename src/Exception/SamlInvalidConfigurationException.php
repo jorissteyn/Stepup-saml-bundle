@@ -24,6 +24,6 @@ class SamlInvalidConfigurationException extends InvalidConfigurationException im
 {
     public static function missingCertificate($path)
     {
-        return new self(sprintf('Either %s.certificate_file or %s.certificate must be set.', $path, $path));
+        return new self(sprintf('Either %s.certificate_file, %s.certificate or %s.keys must be set.', $path, $path, $path));
     }
 }

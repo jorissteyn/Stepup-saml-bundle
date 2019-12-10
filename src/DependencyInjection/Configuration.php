@@ -172,6 +172,31 @@ class Configuration implements ConfigurationInterface
               ->isRequired()
               ->info('The name of the route to generate the SSO URL')
           ->end()
+          ->arrayNode('keys')
+              ->info(
+                  'One or more keys used to validate the AuthnResponse against (alternative to single '
+                  . 'certificate or certificate_file'
+              )
+              ->prototype('array')
+                  ->children()
+                      ->scalarNode('type')
+                          ->defaultValue('X509Certificate')
+                          ->info('Key type: only X509 is supported')
+                      ->end()
+                      ->scalarNode('X509Certificate')
+                          ->info('X509 certificate without headers')
+                      ->end()
+                      ->scalarNode('encryption')
+                          ->defaultValue(true)
+                          ->info('Allow using this key for encryption')
+                      ->end()
+                      ->scalarNode('signing')
+                          ->defaultValue(true)
+                          ->info('Allow using this key for signing')
+                      ->end()
+                  ->end()
+              ->end()
+          ->end()
           ->scalarNode('certificate')
               ->info(
                   'The contents of the certificate used to sign the AuthnResponse with'
