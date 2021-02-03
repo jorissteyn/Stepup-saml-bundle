@@ -16,14 +16,19 @@
  * limitations under the License.
  */
 
-namespace Surfnet\SamlBundle\Exception;
+namespace Surfnet\SamlBundle\Entity;
 
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-
-class SamlInvalidConfigurationException extends InvalidConfigurationException implements Exception
+interface IdentityProviderRepository
 {
-    public static function missingCertificate($path)
-    {
-        return new self(sprintf('Either %s.certificate_file, %s.certificate or %s.keys must be set.', $path, $path, $path));
-    }
+    /**
+     * @param string $entityId
+     * @return IdentityProvider
+     */
+    public function getIdentityProvider($entityId);
+
+    /**
+     * @param string $entityId
+     * @return bool
+     */
+    public function hasIdentityProvider($entityId);
 }

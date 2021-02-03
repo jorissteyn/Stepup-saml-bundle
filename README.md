@@ -66,11 +66,47 @@ surfnet_saml:
               assertion_consumer_service_url: "%surfnet_saml_remote_sp_acs%"            
 ```
 
-The hosted configuration lists the configuration for the services (SP, IdP or both) that your application offers. SP and IdP
+The `hosted:` configuration lists the configuration for the services (SP, IdP or both) that your application offers. SP and IdP
  functionality can be turned off and on individually through the repective `enabled` flags.
-The remote configuration lists, if enabled, the configuration for a remote IdP to connect to.
+
+The `remote:` configuration lists, if enabled, the configuration for one or more remote service providers and identity providers to connect to.
+If your application authenticates with a single identity provider, you can use the `identity_provider:` option as shown above. The identity
+provider can be accessed runtime using the `@surfnet_saml.remote.idp` service.
+
+If your application authenticates with more than one identity providers, you can omit the `identity_provider:` key from configuration and list all
+identity providers under `identity_providers:`. The identity providers can be accessed by using the `@surfnet_saml.remote.identity_providers` service.
+```yaml
+    remote:
+        identity_providers:
+            -  enabled: true
+               entity_id: %surfnet_saml_remote_idp_entity_id%
+               sso_url: %surfnet_saml_remote_idp_sso_url%
+               certificate: %surfnet_saml_remote_idp_certificate%
+
+```
+
 The inlined certificate in the last line can be replaced with `certificate_file` containing a filesystem path to
-a file which contains said certificate.
+a file which contains said certificate. It is also possible to configure more than one certificates to verify 
+authentication responses against using the `keys` configuration key:
+
+```yaml
+    remote:
+        identity_providers:
+            -  enabled: true
+               entity_id: %surfnet_saml_remote_idp_entity_id%
+               sso_url: %surfnet_saml_remote_idp_sso_url%
+               keys:
+                 - X509Certificate: %surfnet_saml_remote_idp_certificate1%
+                 - X509Certificate: %surfnet_saml_remote_idp_certificate2%
+                   encryption: false
+                   signing: true
+
+```
+
+Only X509 certificates are supported. It is not possible to configure multiple certificates using file paths, as this is 
+not supported by the SAML2 library. In fact, the SAML bundle merely handles configuring the IDP and the actual key loading
+is handled in the SAML2 library.
+
 It is recommended to use parameters as listed above. The various `publickey` and `privatekey` variables are the
  contents of the key in a single line, without the certificate etc. delimiters. The use of parameters as listed above
  is highly recommended so that the actual key contents can be kept out of the configuration files (using for instance
